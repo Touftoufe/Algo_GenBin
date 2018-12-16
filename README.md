@@ -19,6 +19,6 @@ the file "result" is not used by the program
   - Y_max E [0.72, 0.785535] coded in 16 bit integer ~ [0, 65535]
 
 # Ploting the curves
-  The programm uses Matlab or Octave to plot the curves, you have the possibility to choose which one to use during the execution.
+  The program uses Matlab or Octave to plot the curves, you have the possibility to choose which one to use during the execution.
   
   NOTE: Make sure that you put the right path to the octave bin folder on the nongenfun.h, by default it is "C:\\Octave\\Octave-4.4.1\\bin"
