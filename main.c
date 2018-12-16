@@ -60,6 +60,5 @@ int main()
     scanf("%d",&i);
     plot(i, Y0, lambda_L, lambda_0, Ymax);
 
-
     return 0;
 }
