@@ -36,3 +36,13 @@ void plot(int soft, double Y0, double lambda_L, double lambda_0, double Ymax)
     system(script);
 
 }
+
+/**
+ * @brief electronic_density
+ * @param lambda_L
+ * @return the electronic density ne
+ */
+double electronic_density(double lambda_L)
+{
+    return pow(10, 21.78515 + 1.2614 * log10(lambda_L));
+}

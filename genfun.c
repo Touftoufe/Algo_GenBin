@@ -12,8 +12,8 @@
 
 /**
  * @brief init: initialisation of the first gen chromosomes
- *        randomly generate our constants within their respective intervals and code them into 64 bits integers
- *        all stored in the chromo vector
+ *        randomly generate our constants within their respective intervals (see Constants intervals and conversion rules on genfun.h)
+ *        and code them into 64 bits integers all stored in the chromo vector
  * @param chromo: a (inc = 100) length vector
  */
 void init(uint64_t* chromo)
@@ -77,7 +77,7 @@ int decode(uint64_t chromo, double *Y0, double *lambda_L, double *lambda_0, doub
 
 /**
  * @brief fitting: calculates the image of lambda under the lorentzien function using the constants in a given chromosome
- *        chromo is convertend into the four constants usinf decode and the values are replaced in the fonction
+ *        chromo is converted into the four constants using decode() and the values are replaced in the function
  *        the image of lambda is then calculated and returned
  * @param chromo: 64 bit chromosome containing the four constants
  * @param lambda
@@ -112,24 +112,39 @@ void evaluate(uint64_t* chromo,double data[][3], double* eval)
     }
 }
 
+/**
+ * @brief survival: the Selection, this function chooses which chromosomes will be part of the next generation
+ *        it's done randomly, using a chromosomes' probability to survive. The smallest is the error for a given
+ *        chromosome, the bigger is its chance to survive
+ * @param chromo: double pointer to the chromo vector (because we need to change the adress it points)
+ * @param eval: evaluations vector (errors)
+ */
 void survival(uint64_t **chromo, double *eval)
 {
-    uint64_t *temp_c = calloc(inc,sizeof(uint64_t));
-    double c_prob[inc] = {0}, s = 0;
+    uint64_t *temp_c = calloc(inc,sizeof(uint64_t)); //allocated space for the new generation of chromosomes
+    double c_prob[inc] = {0}; //Cumulative Probability vector
+    double s = 0; //sum of all the chromosomes' errors (that we get using evaluate())
     int i = 0;
     for(i = 0; i < inc; i++)
     {
-        c_prob[i] = (double)1/(double)(eval[i]+1);
-        s += c_prob[i];
+        c_prob[i] = (double)1/(double)(eval[i]+1); //since we're trying to minimize eval, we also trying to maximise 1/eval
+        s += c_prob[i]; //calculate the sum of 1/eval[i]
     }
 
-    c_prob[0] /= s;
+    c_prob[0] /= s; //so the first probability is (1/eval[0]) / sum(1/eval[i])
 
     for(i = 1; i < inc; i++)
     {
-        c_prob[i] = c_prob[i] / s + c_prob[i - 1];
+        c_prob[i] = c_prob[i] / s + c_prob[i - 1]; //so we calculate the cumulative probabilities
     }
 
+    /*now begins the selection, we randomly generate numbers between 0 and 1 stored in 's'
+     * the idea is:
+     * if 0 < s < c_prob[0] then the 1st chromosome 'chromo[0]' is selected to be in the next gen and is strored in temp_c
+     * if c_prob[0] < s < c_prob[1] the the second one is selected 'chromo[1]'
+     * if c_prob[j - 1] < s < c_prob[j] the the 'chromo[j]' is selected
+     * and we do this until we have all 'inc' number of chromosomes
+     */
     for(i = 0; i < inc; i++)
     {
         int j = 0;
@@ -154,29 +169,49 @@ void survival(uint64_t **chromo, double *eval)
         }
     }
 
+    /*in order to gain some performance and avoide the copy of the entire vector, we just free the old 'chromo' vector
+     * and put the 'temp_c' vector adress in 'chromo' to point at it
+     */
     free(*chromo);
     *chromo = temp_c;
 }
 
 /**
  * @brief crossover: makes the crossover operation
+ *        a number of chromosomes are chosen to be crossed according to the cross rate 'X'
+ *        the crossing position is randomly chosen
  * @param chromo: vector of chromosomes
  */
 void crossover(uint64_t *chromo)
 {
+    //'parent' is the vector of the chromosomes' indexes chosen to be crossed and 'n' is their number
     int parent[inc] = {0}, i = 0, n = 0;
+
+    /* a random number between 0 and 1 is generated and compared to the 'X' rate, if it is smaller, the
+     * chromosome 'i' is selected to be a parent, its index is added to 'parent' and 'n' is incremented
+     */
     for(i = 0; i < inc; i++)
     {
         if(rand()/(double)RAND_MAX < X) parent[n++] = i;
     }
 
-    for(i = 0; i < n; i++)
+    /* The parents are corossed 2-by-2 so the 1st X 2nd, 3nd X 4th, ... (n-1)th X (n)th
+     * the position 'R' of the cross is chosen randomly for every pair of chromosomes R = 1:63
+     * then we use a mask to get the 4 parts using the AND (&) operator from the parents and bring them together
+     * to create 2 new chromosomes that will replace their parents on the 'chromo' vector
+     *
+     * ex: let's say we have two 4 bits integers we want to cross: c1 = 1101 and c2 = 0110 and R = 2 means we have
+     * to part the chromosomes between the bit 1 and 2. mask = (1 << R) - 1 = 0b0100 - 1 = 0b0011
+     * so C1 = c1 & mask + c2 & ~mask = 0b1101 & 0b0011 + 0b0110 & 0b1100 = 0b0001 + 0b0100 = 0b0101
+     * and C2 = c1 & ~mask + c2 & mask = 0b1101 & 0b1100 + 0b0110 & 0b0011 = 0b1100 + 0b0010 = 0b1110
+     */
+    for(i = 0; i < n; i+=2)
     {
         int R = rand() % (c_length - 1) + 1;
-        uint32_t filter = (1 << R) - 1, temp;
-        temp = chromo[parent[i]] & filter;
-        chromo[parent[i]] = (chromo[parent[i]] & ~filter) + (chromo[parent[(i+1)%n]] & filter);
-        chromo[parent[(i+1)%n]] = (chromo[parent[(i+1)%n]] & ~filter) + temp;
+        uint32_t mask = (1 << R) - 1, temp;
+        temp = chromo[parent[i]] & mask;
+        chromo[parent[i]] = (chromo[parent[i]] & ~mask) + (chromo[parent[i+1]] & mask);
+        chromo[parent[i+1]] = (chromo[parent[i+1]] & ~mask) + temp;
     }
 
 }
@@ -196,8 +231,8 @@ void mutation(uint64_t *chromo)
         R = rand()%(c_length*inc); // random number between 0 and total number of bits 'inc * c_length'
 
         /* 'R/c_length' is the index of the cromosome and 'R % c_length' is the position of the bit to mutate
-         * ex: lets take R = 197. So the bit to change is in the 197/64 = 3 rd chromosome
-         * the position of the bit in the 3rd chromo is 197 % 64 = 5;
+         * ex: lets take R = 197. So the bit to change is in the chromosome f index 197/64 = 3
+         * the position of the bit in the chromo[3] is 197 % 64 = 5;
          * We use a mask (1 << 5 = 0b100000) to toggle the bit using the XOR (^) operator
          * */
         chromo[R/c_length] ^= (uint64_t)1 << (R % c_length);

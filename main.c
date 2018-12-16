@@ -58,6 +58,8 @@ int main()
     decode(chromo[i_sol],&Y0,&lambda_L,&lambda_0,&Ymax);
     printf("Ymax = %lf, lambda_0 = %lf, lambda_L = %lf, Y0 = %lf\n",Ymax,lambda_0,lambda_L,Y0); //display our constants
     
+    printf("The electronic density = %e /m^3\n",electronic_density(lambda_L)); //display the electronic density
+
     //plot the curves using matlab or octave
     printf("Which software do you want to use ? 0 - Matlab, 1 - Octave\n");
     scanf("%d",&i);
