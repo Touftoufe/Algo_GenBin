@@ -1,6 +1,6 @@
 # Algo_GenBin
 
-The hole project is here, working well, i will comment it later.
+The hole project is here, working well, with all the comments.
 
 # ALL THE FILES HAVE TO BE IN THE SAME FOLDER
 the file "result" is not used by the program
@@ -15,7 +15,7 @@ the file "result" is not used by the program
   
   NOTE: the program is not stopped until it reaches an error < 0.204. If the number of itterations reaches 5000 (~ 20 s), it means that the program has stuck and is not converging to the solution, so the chromosomes are reinitialised using the function "init()"
   
-# Our constants:
+# Our constants with their conversion rules:
   - lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6555, 6607,4287]
   - lambda_L E [7, 15.191] coded in 13 bit integer ~ [0, 8191] <=> [7, 15.191]
   - Y_0 E [0.2, 0.25] coded in 16 bit integer ~ [0, 65535] <=> [0.2, 0.265535]
