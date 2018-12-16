@@ -43,6 +43,11 @@ int main()
         crossover(chromo);
         mutation(chromo);
         printf("%lf     %d\n",best_chromo(eval, &i_sol),i++);
+        if(i > 5000)
+        {
+            init(chromo);
+            i = 0;
+        }
     }
     while(best_chromo(eval, &i_sol) > ferror);
 
