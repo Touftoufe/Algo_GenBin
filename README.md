@@ -3,7 +3,7 @@
 The hole project is here, working well, i will comment it later.
 
 # ALL THE FILES HAVE TO BE IN THE SAME FOLDER
-the file result is not used by the program
+the file "result" is not used by the program
 
 # Parameters
   - The cross rate = 0.2
