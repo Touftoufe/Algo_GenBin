@@ -38,6 +38,7 @@
 #define Mu 0.015
 #define c_length 64
 #define ferror 0.204
+#define max_gen 5000
 
 void init(uint64_t* chromo);
 int decode(uint64_t chromo, double* Y0, double* lambda_L, double* lambda_0, double* Ymax);
