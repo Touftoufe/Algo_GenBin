@@ -3,12 +3,12 @@
 The hole project is here, working well, i will comment it later.
 
 # ALL THE FILES HAVE TO BE IN THE SAME FOLDER
-the file result is not used by the programm
+the file result is not used by the program
 
 # Parameters
   - The cross rate = 0.2
   - The mutation rate = 0.015
-  - Number of cromosoms = 100
+  - Number of chromosomes = 100
   - The first generation is randomly created
   - Error < 0.204
   
