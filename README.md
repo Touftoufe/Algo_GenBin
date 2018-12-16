@@ -11,6 +11,9 @@ the file "result" is not used by the program
   - Number of chromosomes = 100
   - The first generation is randomly created
   - Error < 0.204
+  - max number of itterations 5000
+  
+  NOTE: the program is not stopped until it reaches an error < 0.204. If the number of itterations reaches 5000 (~ 20 s), it means that the program has stuck and is not converging to the solution, so the chromosomes are reinitialised using the function "init()"
   
 # Our constants:
   - lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6555, 6607,4287]
