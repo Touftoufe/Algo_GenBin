@@ -26,7 +26,7 @@ int main()
 
     FILE *profile = fopen("profil.txt","r");
 
-    if(profile == NULL) exit(-1);
+    if(profile == NULL) exit(-1); //if profil.txt does not open, exit the program
 
     for(i = 0; i < data_l; i++)
     {

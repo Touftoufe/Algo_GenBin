@@ -9,11 +9,11 @@
  ************************************************************************************************/
 
 
-/*
- * lambda_0 E [6555, 6570] codee en 19 bit chacun donc [0, 524287] <=> [6555, 6607,4287]
- * lambda_L E [7, 15.191] codee en 13 bit chacun donc [0, 8191] <=> [7, 15.191]
- * Y_0 E [0.2, 0.25] codee en 16 bit donc [0, 65535] <=> [0.2, 0.265535]
- * Y_max E [0.72, 0.785535] codee en 16 bit donc [0, 65535]
+/* Constants intervals and conversion rules
+ * lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6555, 6607,4287]
+ * lambda_L E [7, 15.191] coded in 13 bit integer ~ [0, 8191] <=> [7, 15.191]
+ * Y_0      E [0.2, 0.25] coded in 16 bit integer ~ [0, 65535] <=> [0.2, 0.265535]
+ * Y_max    E [0.72, 0.78] coded in 16 bit integer ~ [0, 65535] <=> [0.72, 0.785535]
  */
 
 
@@ -27,18 +27,22 @@
 
 #define pi 3.14159265358979323846
 
+//lower bounds of our constants sets
 #define inf_lam_0 6555
 #define inf_lam_L 7
 #define inf_Y0 0.2
 #define inf_Ymax 0.72
+
+//length of the profil.txt file
 #define data_l 1024
 
-#define inc 100
-#define X 0.15
-#define Mu 0.015
-#define c_length 64
-#define ferror 0.204
-#define max_gen 5000
+#define inc 100         //number of chromosomes
+#define X 0.15          //Crossover rate
+#define Mu 0.015        //Mutation rate
+#define c_length 64     //Cromosome length (bits)
+#define ferror 0.204    //max overall error
+#define max_gen 5000    //maximun number of generations (itterations)
+
 
 void init(uint64_t* chromo);
 int decode(uint64_t chromo, double* Y0, double* lambda_L, double* lambda_0, double* Ymax);
