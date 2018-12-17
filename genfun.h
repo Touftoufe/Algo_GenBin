@@ -10,7 +10,7 @@
 
 
 /* Constants intervals and conversion rules
- * lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6555, 6607.4287]
+ * lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6540, 6592.4287]
  * lambda_L E [7, 15.191] coded in 13 bit integer ~ [0, 8191] <=> [7, 15.191]
  * Y_0      E [0.2, 0.25] coded in 16 bit integer ~ [0, 65535] <=> [0.2, 0.265535]
  * Y_max    E [0.72, 0.78] coded in 16 bit integer ~ [0, 65535] <=> [0.72, 0.785535]
@@ -28,7 +28,7 @@
 #define pi 3.14159265358979323846
 
 //lower bounds of our constants sets
-#define inf_lam_0 6555
+#define inf_lam_0 6540
 #define inf_lam_L 7
 #define inf_Y0 0.2
 #define inf_Ymax 0.72
