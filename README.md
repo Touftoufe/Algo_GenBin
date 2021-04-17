@@ -1,5 +1,6 @@
 # Algo_GenBin
 
+This is a school project in C language programming
 The hole project is here, working well, with all the comments.
 
 # ALL THE FILES HAVE TO BE IN THE SAME FOLDER
@@ -13,7 +14,7 @@ the file "result" is not used by the program
   - Error < 0.204
   - max number of itterations 5000
   
-  NOTE: the program is not stopped until it reaches an error < 0.204. If the number of itterations reaches 5000 (~ 20 s), it means that the program has stuck and is not converging to the solution, so the chromosomes are reinitialised using the function "init()"
+  NOTE: the program is not stopped until it reaches an error < 0.204. If the number of itterations reaches 5000 (~ 20 s), it means that the program is stuck and is not converging to the solution, so the chromosomes are reinitialised using the function "init()"
   
 # Our constants with their conversion rules:
   - lambda_0 E [6555, 6570] coded in 19 bit integer ~ [0, 524287] <=> [6555, 6607,4287]
